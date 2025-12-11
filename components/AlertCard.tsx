@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '../styles/theme';
@@ -27,33 +26,13 @@ export default function AlertCard({ alert, onPress }: AlertCardProps) {
             activeOpacity={0.85}
             style={styles.container}
         >
-            <View style={[styles.card, { shadowColor: severityConfig.color }]}>
-                {/* Glowing left border */}
-                <LinearGradient
-                    colors={[severityConfig.color, 'transparent']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    style={styles.glowingBorder}
-                />
+            <View style={[styles.card, { borderLeftColor: severityConfig.color }]}>
+                {/* Subtle background tint */}
+                <View style={[styles.backgroundTint, { backgroundColor: severityConfig.bgColor }]} />
 
-                {/* Background gradient */}
-                <LinearGradient
-                    colors={[severityConfig.bgColor, 'transparent']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.backgroundGradient}
-                />
-
-                {/* Icon with glow */}
-                <View style={[styles.iconWrapper, { shadowColor: severityConfig.color }]}>
-                    <LinearGradient
-                        colors={[severityConfig.color, severityConfig.colorDark]}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.iconContainer}
-                    >
-                        <Ionicons name={severityConfig.icon as any} size={22} color="#FFFFFF" />
-                    </LinearGradient>
+                {/* Icon */}
+                <View style={[styles.iconContainer, { backgroundColor: severityConfig.color }]}>
+                    <Ionicons name={severityConfig.icon as any} size={22} color="#FFFFFF" />
                 </View>
 
                 <View style={styles.content}>
@@ -95,14 +74,12 @@ function getSeverityConfig(severity: string) {
         case 'high':
             return {
                 color: colors.alertHigh,
-                colorDark: '#BE123C',
                 bgColor: colors.alertHighBg,
                 icon: 'warning',
             };
         case 'medium':
             return {
                 color: colors.alertMedium,
-                colorDark: '#EA580C',
                 bgColor: colors.alertMediumBg,
                 icon: 'alert-circle',
             };
@@ -110,7 +87,6 @@ function getSeverityConfig(severity: string) {
         default:
             return {
                 color: colors.alertLow,
-                colorDark: '#CA8A04',
                 bgColor: colors.alertLowBg,
                 icon: 'information-circle',
             };
@@ -124,41 +100,23 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: colors.cardBackground,
-        borderRadius: borderRadius.xl,
+        borderRadius: borderRadius.lg,
         padding: spacing.md,
-        paddingLeft: spacing.lg,
+        paddingLeft: spacing.md,
         flexDirection: 'row',
         alignItems: 'center',
         overflow: 'hidden',
         borderWidth: 1,
         borderColor: colors.glassBorder,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 12,
-        elevation: 4,
+        borderLeftWidth: 4,
     },
-    glowingBorder: {
+    backgroundTint: {
         position: 'absolute',
         left: 0,
         top: 0,
         bottom: 0,
-        width: 3,
-        borderTopLeftRadius: borderRadius.xl,
-        borderBottomLeftRadius: borderRadius.xl,
-    },
-    backgroundGradient: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: 150,
-    },
-    iconWrapper: {
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.4,
-        shadowRadius: 8,
-        elevation: 4,
-        marginRight: spacing.md,
+        width: 120,
+        opacity: 0.5,
     },
     iconContainer: {
         width: 44,
@@ -166,6 +124,7 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius.md,
         justifyContent: 'center',
         alignItems: 'center',
+        marginRight: spacing.md,
     },
     content: {
         flex: 1,
